@@ -10,4 +10,4 @@ install: build
 	sudo mv $(APP) /usr/local/bin/
 
 uninstall:
-	sudo rm /usr/local/bin/$(APP)
+	sudo rm -f /usr/local/bin/$(APP)
