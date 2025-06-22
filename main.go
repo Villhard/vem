@@ -47,7 +47,7 @@ func main() {
 	args = append(args,
 		"-vn",
 		"-ar", "16000",
-		"-b:a", "32k",
+		"-b:a", "64k",
 		"-c:a", "aac",
 		outputFile,
 	)
