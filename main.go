@@ -35,11 +35,9 @@ func main() {
 	}
 
 	if *ss != "" {
-		fmt.Printf("Adding -ss %s\n", *ss)
 		args = append(args, "-ss", *ss)
 	}
 	if *to != "" {
-		fmt.Printf("Adding -to %s\n", *to)
 		args = append(args, "-to", *to)
 	}
 
