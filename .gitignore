@@ -1,2 +1,6 @@
 vem
 config.yaml
+
+# IDE
+.idea
+.vscode
