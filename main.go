@@ -50,6 +50,7 @@ func loadConfig() (*Config, error) {
 func main() {
 	ss := flag.String("ss", "", "Start time (HH:MM:SS), optional")
 	to := flag.String("to", "", "End time (HH:MM:SS), optional")
+	vn := flag.Bool("vn", false, "Convert to audio only")
 	inputFile := flag.String("i", "", "Input file")
 	flag.Parse()
 
@@ -71,7 +72,12 @@ func main() {
 
 	inputDir := filepath.Dir(*inputFile)
 	inputBase := strings.TrimSuffix(filepath.Base(*inputFile), filepath.Ext(*inputFile))
-	outputFile := filepath.Join(inputDir, inputBase+".m4a")
+	var outputFile string
+	if *vn {
+		outputFile = filepath.Join(inputDir, inputBase+".m4a")
+	} else {
+		outputFile = filepath.Join(inputDir, inputBase+".mov")
+	}
 
 	args := []string{
 		"-hide_banner",
@@ -86,13 +92,17 @@ func main() {
 	}
 
 	args = append(args, "-i", *inputFile)
-	args = append(args,
-		"-vn",
-		"-ar", strconv.Itoa(config.Audio.SampleRate),
-		"-b:a", config.Audio.Bitrate,
-		"-c:a", "aac",
-		outputFile,
-	)
+	if *vn {
+		args = append(args,
+			"-vn",
+			"-ar", strconv.Itoa(config.Audio.SampleRate),
+			"-b:a", config.Audio.Bitrate,
+			"-c:a", "aac",
+		)
+	} else {
+		args = append(args, "-c", "copy")
+	}
+	args = append(args, outputFile)
 
 	cmd := exec.Command("ffmpeg", args...)
 
