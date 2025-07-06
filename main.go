@@ -47,6 +47,21 @@ func loadConfig() (*Config, error) {
 	return config, nil
 }
 
+func generateOutputFilename(inputFile string, audioOnly bool) string {
+	inputDir := filepath.Dir(inputFile)
+	inputBase := strings.TrimSuffix(filepath.Base(inputFile), filepath.Ext(inputFile))
+
+	outputBase := inputBase
+	if underscoreIndex := strings.LastIndex(inputBase, "_"); underscoreIndex != -1 {
+		outputBase = inputBase[:underscoreIndex]
+	}
+
+	if audioOnly {
+		return filepath.Join(inputDir, outputBase+".m4a")
+	}
+	return filepath.Join(inputDir, outputBase+".mov")
+}
+
 func main() {
 	ss := flag.String("ss", "", "Start time (HH:MM:SS), optional")
 	to := flag.String("to", "", "End time (HH:MM:SS), optional")
@@ -70,14 +85,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	inputDir := filepath.Dir(*inputFile)
-	inputBase := strings.TrimSuffix(filepath.Base(*inputFile), filepath.Ext(*inputFile))
-	var outputFile string
-	if *vn {
-		outputFile = filepath.Join(inputDir, inputBase+".m4a")
-	} else {
-		outputFile = filepath.Join(inputDir, inputBase+".mov")
-	}
+	outputFile := generateOutputFilename(*inputFile, *vn)
 
 	args := []string{
 		"-hide_banner",
