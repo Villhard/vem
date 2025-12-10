@@ -16,16 +16,18 @@
 2.  **Использование:**
     ```bash
     # Извлечение аудио
-    vem -i input.mov -vn
+    vem -i input.mov -o result -vn    # → result.m4a
 
     # Извлечение аудио с обрезкой
-    vem -i input.mov -vn -ss 00:01:10 -to 00:02:45
+    vem -i input.mov -o result -vn -ss 00:01:10 -to 00:02:45
 
     # Обрезка видео
-    vem -i input.mov -ss 00:01:10 -to 00:02:45
+    vem -i input.mov -o result -ss 00:01:10 -to 00:02:45    # → result.mov
     ```
-    
+
     **Флаги:**
+    - `-i` - входной файл (обязательный)
+    - `-o` - имя выходного файла без расширения (обязательный)
     - `-vn` - извлечь только аудио
     - `-ss` - время начала (HH:MM:SS)
     - `-to` - время окончания (HH:MM:SS)
