@@ -47,26 +47,12 @@ func loadConfig() (*Config, error) {
 	return config, nil
 }
 
-func generateOutputFilename(inputFile string, audioOnly bool) string {
-	inputDir := filepath.Dir(inputFile)
-	inputBase := strings.TrimSuffix(filepath.Base(inputFile), filepath.Ext(inputFile))
-
-	outputBase := inputBase
-	if underscoreIndex := strings.LastIndex(inputBase, "_"); underscoreIndex != -1 {
-		outputBase = inputBase[:underscoreIndex]
-	}
-
-	if audioOnly {
-		return filepath.Join(inputDir, outputBase+".m4a")
-	}
-	return filepath.Join(inputDir, outputBase+".mov")
-}
-
 func main() {
 	ss := flag.String("ss", "", "Start time (HH:MM:SS), optional")
 	to := flag.String("to", "", "End time (HH:MM:SS), optional")
 	vn := flag.Bool("vn", false, "Convert to audio only")
 	inputFile := flag.String("i", "", "Input file")
+	outputName := flag.String("o", "", "Output file name (without extension)")
 	flag.Parse()
 
 	config, err := loadConfig()
@@ -85,7 +71,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	outputFile := generateOutputFilename(*inputFile, *vn)
+	if *outputName == "" {
+		fmt.Println("Error: output file name is required (-o)")
+		os.Exit(1)
+	}
+
+	inputDir := filepath.Dir(*inputFile)
+	ext := ".mov"
+	if *vn {
+		ext = ".m4a"
+	}
+	outputFile := filepath.Join(inputDir, *outputName+ext)
 
 	args := []string{
 		"-hide_banner",
