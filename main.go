@@ -48,8 +48,8 @@ func loadConfig() (*Config, error) {
 }
 
 func main() {
-	ss := flag.String("ss", "", "Start time (HH:MM:SS), optional")
-	to := flag.String("to", "", "End time (HH:MM:SS), optional")
+	ss := flag.String("ss", "", "Start time (SS, MM:SS, or HH:MM:SS)")
+	to := flag.String("to", "", "End time (SS, MM:SS, or HH:MM:SS)")
 	vn := flag.Bool("vn", false, "Convert to audio only")
 	inputFile := flag.String("i", "", "Input file")
 	outputName := flag.String("o", "", "Output file name (without extension)")
